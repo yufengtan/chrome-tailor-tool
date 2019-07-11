@@ -1,3 +1,11 @@
+@keyframes boling{
+    from {box-shadow: 0 0 4px 2px #1890ff inset;}
+    to {box-shadow: 0 0 0px 1px #1890ff inset;}
+}
+@keyframes star{
+    from {border-color: #13c2c2;}
+    to {border-color: red;}
+}
 body{
     box-sizing: border-box !important;
     padding-top: 120px !important; 
@@ -75,10 +83,14 @@ body{
     border-width: 3px;
 }
 .tailor-current::before{
-    border-color: #13c2c2;
+    /* border-color: #13c2c2; */
+    animation: star .3s linear infinite;
+    border-width: 2px;
 }
 .tailor-current::after{
-    border-color: #13c2c2;
+    /* border-color: #13c2c2; */
+    animation: star .3s linear infinite;
+    border-width: 2px;
 }
 body::after{
     position: fixed;
@@ -121,6 +133,21 @@ body::after{
 .tailor-info{
     background-color: #f00;
     margin-left: 32px;
-    width: 80px;
+    width: fit-content;
+    min-width: 80px;
     text-align: center;
+}
+
+*[tailor-focus]{
+    position: relative;
+}
+*[tailor-focus]::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    animation: boling .5s linear infinite;
+    z-index: 10000;
 }

@@ -78,24 +78,28 @@
             let current = $(sellector)
             current.addClass('tailor-current')
             $('body').append($('<div class="tailor-btns">').append(sellectors.map((item, index) => {
+                let n = sellectors.length
+                let target = (() => {
+                    let parent = current
+                    for (let i = 0; i < n - (index + 1); i++) {
+                        parent = parent.parent()
+                    }
+                    return parent
+                })()
                 return $('<div class="tailor-btn">').text(item).click(function () {
-                    let n = sellectors.length
                     if (index < 2) {
                         return false
                     }
                     if (index === n) {
                         return false
                     }
-                    let target = (() => {
-                        let parent = current
-                        for (let i = 0; i < n - (index + 1); i++) {
-                            parent = parent.parent()
-                        }
-                        return parent
-                    })()
                     Highlight(target[0])
+                }).hover(function () {
+                    target.attr('tailor-focus', true)
+                }, function () {
+                    target.removeAttr('tailor-focus')
                 })
-            }), $('<div class="tailor-info">').text(`${len > 1 ? `List<${eq}, ${len}>` : 'Single'}`)))
+            }), $('<div class="tailor-info">').text(`${len > 1 ? `List<${eq + 1}, ${len}>` : 'Single'}`)))
             return sellector
         })())
         that = target
