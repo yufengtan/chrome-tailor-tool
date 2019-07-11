@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../../public/javascripts/jquery.js"></script>
+    <script src="../controllers/popup.js"></script>
+    <title>POPUP PAGE</title>
+    <style>
+        html,
+        body {
+            width: 500px;
+            box-sizing: border-box;
+        }
+
+        .crt {
+            margin: 60px 0;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 16px;
+            position: relative;
+        }
+
+        .lable {
+            width: 25%;
+            color: #333;
+        }
+
+        .plain-input {
+            width: 75%;
+        }
+
+        .plain-input input {
+            border: none;
+            outline: none;
+            color: red;
+            text-indent: 1rem;
+            width: 100%;
+            border-bottom: 1px #ccc solid;
+        }
+
+        .sure {
+            background-color: #1890ff;
+            color: #fff;
+            margin: 16px;
+            text-align: center;
+            padding: 8px 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="crt">
+        <div class="lable">引擎地址</div>
+        <div class="plain-input">
+            <input type="text" name="engine" placeholder="输入裁制引擎地址" />
+        </div>
+    </div>
+    <div class="sure">确 定</div>
+</body>
+
+</html>

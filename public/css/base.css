@@ -1,0 +1,126 @@
+body{
+    box-sizing: border-box !important;
+    padding-top: 120px !important; 
+}
+.tailor-hover{
+    /* box-sizing: border-box !important; */
+    /* border: 1px #f00 dashed !important; */
+    position: relative;
+}
+.tailor-hover *{
+    position: relative;
+}
+.tailor-hover-parent{
+    position: relative;
+}
+.tailor-hover-parent::before{
+    content: '+';
+    position: absolute;
+    top: 0;
+    height: 0;
+    left: 0;
+    right: 0;
+    /* background-color: rgba(255,255,255,.85); */
+    box-sizing: border-box;
+    border-top: 3px black dashed;
+}
+.tailor-hover-parent::after{
+    content: '+';
+    position: absolute;
+    height: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* background-color: rgba(255,255,255,.85); */
+    box-sizing: border-box;
+    border-bottom: 3px black dashed;
+}
+.tailor-hover *::before{
+    content: '-';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* background-color: rgba(255,255,255,.85); */
+    box-sizing: border-box;
+    border: 1px blue dashed;
+}
+.tailor-hover::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    box-sizing: border-box;
+    border-top: 1px red dashed;
+    z-index: 10;
+}
+.tailor-hover::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    box-sizing: border-box;
+    border-bottom: 1px red dashed;
+    z-index: 10;
+}
+.tailor-hover:hover::before{
+    border-width: 3px;
+}
+.tailor-hover:hover::after{
+    border-width: 3px;
+}
+.tailor-current::before{
+    border-color: #13c2c2;
+}
+.tailor-current::after{
+    border-color: #13c2c2;
+}
+body::after{
+    position: fixed;
+    padding: 8px;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* text-align: right; */
+    text-align: left;
+    background-color: rgba(0,0,0,.85);
+    content: attr(data-class);
+    color: #f00;
+    z-index: 1000000;
+}
+.tailor-btns{
+    position: fixed;
+    width: fit-content;
+    min-width: 300px;
+    background-color: rgba(0,0,0,0);
+    color: white;
+    z-index: 1000;
+    margin-top: -30px;
+    height: 30px;
+    line-height: 30px;
+    display: flex;
+    top: 66px;
+    left: 0;
+}
+.tailor-btn{
+    box-shadow: 0 0 4px 1px #1890ff inset;
+    padding: 0 2px;
+    cursor: pointer;
+    background-color: #1890ff;
+    border-radius: 2px;
+    min-width: 60px;
+}
+.tailor-btn:not(:first-child){
+    margin-left: 8px;
+}
+.tailor-info{
+    background-color: #f00;
+    margin-left: 32px;
+    width: 80px;
+    text-align: center;
+}

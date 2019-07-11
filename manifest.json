@@ -1,0 +1,48 @@
+{
+    "manifest_version": 2,
+    "name": "Tailor-Tool",
+    "version": "1.0.0",
+    "description": "裁制工具",
+    "icons": {
+        "16": "public/images/icon.png",
+        "48": "public/images/icon.png",
+        "128": "public/images/icon.png"
+    },
+    "background": {
+        "page": "src/pages/admin.html"
+    },
+    "page_action": {
+        "default_icon": "public/images/icon.png",
+        "default_title": "这是Tailor裁制工具",
+        "default_popup": "src/pages/popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "public/javascripts/jquery.js",
+                "src/controllers/all_urls.js"
+            ],
+            "css": [
+                "public/css/base.css"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+    "permissions": [
+        "contextMenus",
+        "tabs",
+        "notifications",
+        "webRequest",
+        "webRequestBlocking",
+        "storage",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "homepage_url": "https://www.baidu.com",
+    "omnibox": {
+        "keyword": "tailor"
+    }
+}
