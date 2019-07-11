@@ -92,7 +92,7 @@ body{
     animation: star .3s linear infinite;
     border-width: 2px;
 }
-body::after{
+body[data-class]::after{
     position: fixed;
     padding: 8px;
     top: 0;
@@ -102,7 +102,7 @@ body::after{
     text-align: left;
     background-color: rgba(0,0,0,.85);
     content: attr(data-class);
-    color: #f00;
+    color: white;
     z-index: 1000000;
 }
 .tailor-btns{

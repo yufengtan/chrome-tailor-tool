@@ -24,9 +24,9 @@
         }
     }
 
-    function notification(title, message, delay) {
+    function notification(title, message, delay = 0, id) {
         notificationTimer && window.clearTimeout(notificationTimer)
-        chrome.notifications.create('tips', {
+        chrome.notifications.create(id || 'tips', {
             type: 'basic',
             title,
             iconUrl: '../../public/images/icon.png',
@@ -39,7 +39,7 @@
     const reducers = {
         lock: {
             lock() {
-                notification('裁制状态切换', 'Hover 关闭')
+                notification('裁制状态切换', 'Hover 暂停')
                 // getCurrentTabId().then(tabid => {
                 //     console.log(tabid)
                 //     tabid && chrome.pageAction.hide(tabid)
@@ -51,6 +51,14 @@
                 //     console.log(tabid)
                 //     tabid && chrome.pageAction.show(tabid)
                 // })
+            },
+            clear() {
+                notification('裁制状态切换', 'Hover 退出')
+            }
+        },
+        notice: {
+            info({ message }) {
+                notification('提示', message, 5e3, 'notice')
             }
         }
     }

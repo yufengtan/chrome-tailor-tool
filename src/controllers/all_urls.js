@@ -1,20 +1,37 @@
 +(($) => {
     let that = null
-    let lock = false
+    let lock = true
+    let helpText = '按下键盘 “E” 键开始锁定切片坐标，按下键盘 “D” 键暂停锁定切片坐标，按下键盘 “H” 键提示操作，按下键盘 “ESC” 键退出锁定切片坐标。'
+    $(document).ready(function () {
+        $('body').attr('data-class', `该页面已被裁制工具接管，${helpText}`)
+    })
     $(document).keydown(function (event) {
         let { keyCode } = event
-        // console.log(keyCode)
+        console.log(keyCode)
         if (keyCode === 68) {
             chrome.runtime.sendMessage({
                 type: 'lock/lock'
             })
             lock = true
         }
+        if (keyCode === 72) {
+            chrome.runtime.sendMessage({
+                type: 'notice/info',
+                message: helpText
+            })
+        }
         if (keyCode === 69) {
             chrome.runtime.sendMessage({
                 type: 'lock/open'
             })
             lock = false
+        }
+        if (keyCode === 27) {
+            chrome.runtime.sendMessage({
+                type: 'lock/clear'
+            })
+            clear()
+            lock = true
         }
     })
 
@@ -29,14 +46,20 @@
         Highlight(this)
     })
 
-    function Highlight(target) {
-        let self = $(target)
+    function clear() {
         $('.tailor-btns').remove()
         $('.tailor-hover').removeClass('tailor-hover')
         $('.tailor-current').removeClass('tailor-current')
-        // $('.tailor-hover-parent').removeClass('tailor-hover-parent')
+        $('body').removeAttr('data-class')
+    }
+
+    function Highlight(target) {
+        let self = $(target)
+        clear()
+        // $('.tailor-btns').remove()
+        // $('.tailor-hover').removeClass('tailor-hover')
+        // $('.tailor-current').removeClass('tailor-current')
         self.addClass('tailor-hover')
-        // self.parent().addClass('tailor-hover-parent')
         $('body').attr('data-class', (() => {
             let parents = self.parents()
             Array.prototype.unshift.call(parents, target)
