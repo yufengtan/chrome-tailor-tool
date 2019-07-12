@@ -1,4 +1,4 @@
-+((w) => {
++((w, $) => {
     let notificationTimer = null
 
     Promise.try = async function (handler) {
@@ -15,24 +15,68 @@
 
     class TailorEngine {
         constructor() {
-            this.engine = ''
+            this.engine = 'http://127.0.0.1:8100'
         }
         setEngine(url) {
             console.log('setEngine : ', url)
-            notification('设置裁制引擎地址成功', url)
-            this.engine = url
+            this.test(url).then(succ => {
+                if (!succ) {
+                    notification('设置切片训练引擎地址失败', '引擎地址未响应', 5e3, 'notice')
+                } else {
+                    notification('设置切片训练引擎地址成功', url, 5e3, 'notice')
+                    this.engine = url
+                }
+            }).catch(error => {
+                notification('设置切片训练引擎地址失败', '引擎地址未响应', 5e3, 'notice')
+            })
+        }
+        train({ uri, sellector }) {
+            $.get(`${this.engine}/train?uri=${escape(uri)}&sellector=${escape(sellector)}`).done(data => {
+                let {
+                    success,
+                    html,
+                    error
+                } = data
+                if (success === 0) {
+                    getCurrentTabId().then(id => {
+                        id && chrome.tabs.sendMessage(id, {
+                            type: 'piece/results',
+                            html
+                        })
+                    })
+                    notification('训练成功', JSON.stringify(html), 5e3, 'response')
+                } else {
+                    notification('训练失败', error.message, 5e3, 'response')
+                }
+            })
+        }
+        test(url) {
+            return new Promise((resolve, reject) => {
+                try {
+                    $.get(url).done(data => {
+                        if (data.success === 0) {
+                            resolve(true)
+                        } else {
+                            resolve(false)
+                        }
+                    }).catch(reject)
+                } catch (e) {
+                    reject(e)
+                }
+            })
+
         }
     }
 
     function notification(title, message, delay = 0, id) {
-        notificationTimer && window.clearTimeout(notificationTimer)
+        notificationTimer && w.clearTimeout(notificationTimer)
         chrome.notifications.create(id || 'tips', {
             type: 'basic',
             title,
             iconUrl: '../../public/images/icon.png',
             message
         })
-        notificationTimer = window.setTimeout(() => {
+        notificationTimer = w.setTimeout(() => {
             chrome.notifications.clear('tips')
         }, delay || 1e3)
     }
@@ -59,6 +103,15 @@
         notice: {
             info({ message }) {
                 notification('提示', message, 5e3, 'notice')
+            }
+        },
+        piece: {
+            train({ sellector, uri }) {
+                if (!w['TailorEngine'].engine) {
+                    return notification('提示', '未设置切片训练引擎，请先点击插件图标设置', 3e3, 'tips')
+                }
+                w['TailorEngine'].train({ uri, sellector })
+                // notification('切片训练', `${uri} : ${sellector}`, 3e3, 'piece')
             }
         }
     }
@@ -87,4 +140,4 @@
     })
 
     w['TailorEngine'] = new TailorEngine
-})(window)
+})(window, jQuery)

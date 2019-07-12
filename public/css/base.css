@@ -118,6 +118,7 @@ body[data-class]::after{
     display: flex;
     top: 66px;
     left: 0;
+    flex-wrap: wrap;
 }
 .tailor-btn{
     box-shadow: 0 0 4px 1px #1890ff inset;
@@ -126,6 +127,7 @@ body[data-class]::after{
     background-color: #1890ff;
     border-radius: 2px;
     min-width: 60px;
+    margin-bottom: 4px;
 }
 .tailor-btn:not(:first-child){
     margin-left: 8px;
@@ -136,6 +138,29 @@ body[data-class]::after{
     width: fit-content;
     min-width: 80px;
     text-align: center;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+.tailor-train{
+    background-color: #f00;
+    width: fit-content;
+    min-width: 80px;
+    text-align: center;
+    margin-bottom: 4px;
+    border-left: 1px black solid;
+    cursor: pointer;
+}
+.tailor-piece{
+    position: fixed;
+    width: 500px;
+    height: 600px;
+    z-index: 1000;
+    top: 120px;
+    left: 0;
+    box-sizing: border-box;
+    border: 2px gray solid;
+    background-color: rgba(255, 255, 255, .9);
+    box-shadow: 0 0 4px 2px black;
 }
 
 *[tailor-focus]{

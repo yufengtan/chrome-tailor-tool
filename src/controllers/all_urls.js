@@ -1,7 +1,28 @@
 +(($) => {
+    chrome.runtime.onMessage.addListener(message => {
+        let {
+            type,
+            ...opts
+        } = message
+        if (type === 'piece/results') {
+            let iframe = $('<iframe name="piece" src="/piece">')
+            iframe.css({
+                border: 'none',
+                outline: 'none',
+                width: '100%',
+                height: '100%'
+            }).on('load', function () {
+                let d = window.frames['piece'].document
+                d.open()
+                d.write(opts.html.join(''))
+                d.close()
+            })
+            $('body').append($('<div class="tailor-piece">').append(iframe))
+        }
+    })
     let that = null
     let lock = true
-    let helpText = '按下键盘 “E” 键开始锁定切片坐标，按下键盘 “D” 键暂停锁定切片坐标，按下键盘 “H” 键提示操作，按下键盘 “ESC” 键退出锁定切片坐标。'
+    let helpText = '按下键盘 “E” 键开始锁定切片坐标，按下键盘 “D” 键暂停锁定切片坐标，按下键盘 “H” 键提示操作，按下键盘 “ESC” 键退出锁定切片坐标，点击插件图标设置切片训练引擎地址。'
     $(document).ready(function () {
         $('body').attr('data-class', `该页面已被裁制工具接管，${helpText}`)
     })
@@ -48,6 +69,7 @@
 
     function clear() {
         $('.tailor-btns').remove()
+        $('.tailor-piece').remove()
         $('.tailor-hover').removeClass('tailor-hover')
         $('.tailor-current').removeClass('tailor-current')
         $('body').removeAttr('data-class')
@@ -69,7 +91,7 @@
                 if (item.id) {
                     return tagName + '#' + item.id
                 } else if (className) {
-                    return tagName + '.' + className.replace(/ /mg, '.')
+                    return tagName + '.' + className.replace(/ {1,}/mg, '.')
                 } else {
                     return tagName
                 }
@@ -122,7 +144,33 @@
                 }, function () {
                     target.removeAttr('tailor-focus')
                 })
-            }), $('<div class="tailor-info">').text(`${len > 1 ? `List<${eq + 1}, ${len}>` : 'Single'}`)))
+            }), $('<div class="tailor-info">').text(`${len > 1 ? `List<${eq + 1}, ${len}>` : 'Single'}`), $('<div class="tailor-train">').text('训练').click(function () {
+                if (len > 1) {
+                    let answer = window.prompt('输入list开始训练list切片，输入single开始训练single切片。') || ''
+                    if (answer.toLowerCase().startsWith('l')) {
+                        chrome.runtime.sendMessage({
+                            type: 'piece/train',
+                            sellector: sellector.substring(0, sellector.lastIndexOf(':')),
+                            uri: window.location.href
+                        })
+                    }
+                    if (answer.toLowerCase().startsWith('s')) {
+                        chrome.runtime.sendMessage({
+                            type: 'piece/train',
+                            sellector,
+                            uri: window.location.href
+                        })
+                    }
+                } else {
+                    if (window.confirm('开始训练single切片。')) {
+                        chrome.runtime.sendMessage({
+                            type: 'piece/train',
+                            sellector,
+                            uri: window.location.href
+                        })
+                    }
+                }
+            })))
             return sellector
         })())
         that = target
